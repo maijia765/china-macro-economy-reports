@@ -55,7 +55,9 @@ article p.note,article .src{font-size:12.5px;color:#888;text-align:left}
 article figure{margin:18px 0;text-align:center}
 article figure img{max-width:100%;height:auto;border:1px solid #e3e6ea;border-radius:8px;background:#fff}
 @media (prefers-color-scheme:dark){article figure img{border-color:#33363d}}
-article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13px}
+.tbl{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
+article table{border-collapse:collapse;width:100%;margin:0;font-size:13px}
+@media (max-width:640px){article th,article td{padding:5px 7px}}
 article th,article td{border:1px solid #c9ced6;padding:6px 9px;text-align:center}
 article th{background:#eef2f7;font-weight:700}
 @media (prefers-color-scheme:dark){article th{background:#232833}article th,article td{border-color:#3a3f4a}}
@@ -192,14 +194,22 @@ def table_html(tab, spans):
     grid = []
     for rowobj in tab.rows:
         grid.append([cell_text(c, spans) for c in rowobj.cells])
-    # 逻辑行合并：检测网格会把跨行单元格按文本行拆成多个微行，
-    # 首列为空的行是上一逻辑行的续行，按列拼接回去。
+    # 逻辑行合并：检测网格会把跨行单元格按文本行拆成多个微行，续行按列拼回上一行。
+    # 续行判据：①首列为空；或②列数≥4、过半单元格为空、且整行只是短碎片
+    # （如"欧元区"被拆成"欧元"+"区"，续行只剩"区"+"息）"共 3 字）。
+    # 首列是整段长文字的行是独立记录或表下注释，绝不能并（财政版踩过）。
     if len(grid) > 1:
+        ncols = len(grid[0])
         merged = [grid[0]]
         for row in grid[1:]:
             if not any(row):
                 continue
-            if row[0] or len(merged) <= 1:
+            empty = sum(1 for c in row if not c)
+            first_txt = next((c for c in row if c), "")
+            frag_only = len(first_txt) <= 5 and sum(len(c) for c in row) <= 10
+            is_cont = len(merged) > 1 and (
+                not row[0] or (ncols >= 4 and empty * 2 >= ncols and frag_only))
+            if not is_cont:
                 merged.append(list(row))
             else:
                 for i, t in enumerate(row):
@@ -213,13 +223,16 @@ def table_html(tab, spans):
         lo, hi = min(nonempty), max(nonempty)
         if any(not header[i] for i in range(lo, hi + 1)):
             suspicious = True
-    out = ["<table>"]
+    ncols = len(grid[0]) if grid else 0
+    minw = max(ncols * 104, 300) if ncols > 3 else 0
+    style = f' style="min-width:{minw}px"' if minw else ""
+    out = [f'<div class="tbl"><table{style}>']
     for r, row in enumerate(grid):
         if not any(row):
             continue
         tag = "th" if r == 0 else "td"
         out.append("<tr>" + "".join(f"<{tag}>{esc(t)}</{tag}>" for t in row) + "</tr>")
-    out.append("</table>")
+    out.append("</table></div>")
     return ("".join(out) if len(out) > 2 else ""), suspicious
 
 def strip_tags(h):
