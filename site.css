@@ -1,0 +1,49 @@
+
+:root{color-scheme:light dark}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;background:#f7f8fa;color:#1c1e21;line-height:1.85}
+@media (prefers-color-scheme:dark){body{background:#14161a;color:#e8e8e8}}
+.wrap{max-width:800px;margin:0 auto;padding:40px 20px 64px}
+a{color:#0b3d91}
+@media (prefers-color-scheme:dark){a{color:#7db3f5}}
+.back{display:inline-block;margin-bottom:22px;font-size:14px;text-decoration:none}
+.back:hover{text-decoration:underline}
+header.doc{border-bottom:3px solid #0b3d91;padding-bottom:16px;margin-bottom:28px}
+header.doc h1{font-size:27px;line-height:1.45;margin:0 0 8px}
+header.doc .meta{color:#777;font-size:13.5px}
+@media (prefers-color-scheme:dark){header.doc .meta{color:#9aa0a6}}
+article h2{font-size:20px;margin:34px 0 12px;padding-bottom:6px;border-bottom:2px solid #0b3d91}
+article h3{font-size:16.5px;margin:24px 0 10px;color:#0b3d91}
+@media (prefers-color-scheme:dark){article h3{color:#7db3f5}}
+article p{margin:10px 0;font-size:15.5px;text-align:justify}
+article p.kpi{font-size:22px;font-weight:700;margin:14px 0 2px;color:#0b3d91}
+@media (prefers-color-scheme:dark){article p.kpi{color:#7db3f5}}
+article p.note,article .src{font-size:12.5px;color:#888;text-align:left}
+article figure{margin:18px 0;text-align:center}
+article figure img{max-width:100%;height:auto;border:1px solid #e3e6ea;border-radius:8px;background:#fff}
+@media (prefers-color-scheme:dark){article figure img{border-color:#33363d}}
+article table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13px}
+article th,article td{border:1px solid #c9ced6;padding:6px 9px;text-align:center}
+article th{background:#eef2f7;font-weight:700}
+@media (prefers-color-scheme:dark){article th{background:#232833}article th,article td{border-color:#3a3f4a}}
+article td:first-child{text-align:left}
+article ul,article ol{font-size:15.5px;margin:10px 0;padding-left:24px}
+article li{margin-bottom:6px}
+.dl{margin-top:44px;border-top:2px solid #0b3d91;padding-top:18px}
+.dl h2{font-size:17px;margin:0 0 12px}
+.dl a.btn{display:inline-block;margin:0 10px 10px 0;padding:9px 18px;border:1.5px solid #0b3d91;border-radius:8px;text-decoration:none;font-size:14.5px}
+.dl a.btn:hover{background:#0b3d91;color:#fff}
+footer.site{text-align:center;color:#999;font-size:13px;margin-top:40px}
+/* 首页卡片 */
+header.home h1{font-size:30px;margin:0 0 8px}
+header.home p{color:#666;margin:0 0 34px;font-size:14.5px}
+@media (prefers-color-scheme:dark){header.home p{color:#9aa0a6}}
+.card{background:#fff;border:1px solid #e3e6ea;border-radius:12px;padding:20px 24px;margin-bottom:18px}
+@media (prefers-color-scheme:dark){.card{background:#1d2026;border-color:#33363d}}
+.card h2{font-size:19px;margin:0 0 6px}
+.card h2 a{text-decoration:none;color:inherit}
+.card h2 a:hover{color:#0b3d91;text-decoration:underline}
+.card .meta{color:#888;font-size:13px;margin-bottom:10px}
+.card .links a{font-size:14px;margin-right:16px;text-decoration:none}
+.card .links a:hover{text-decoration:underline}
+.card .links .read{font-weight:700}
