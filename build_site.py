@@ -14,10 +14,6 @@ import pymupdf
 BASE = os.path.dirname(os.path.abspath(__file__))
 
 REPORTS = [
-    dict(slug="2026-10-europe", title="欧洲主要经济体宏观经济与能源价格调研报告",
-         meta="2026年10月 · 专题调研 · 数据截止 2026-10-19", kind="europe",
-         downloads=[("10月/欧洲主要经济体宏观经济与能源价格调研报告_2026-10-19.pdf", "报告 PDF"),
-                    ("10月/调研数据档案_dossier_2026-10-19.md", "调研数据档案")]),
     dict(slug="2026-09-run", title="2026年9月中国经济运行报告",
          meta="2026年9月 · 经济运行 · 数据截至 2026-10-20", kind="pdf",
          pdf="9月/2026年9月中国经济运行报告.pdf",
