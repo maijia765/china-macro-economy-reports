@@ -409,6 +409,17 @@ def main():
             f'<div class="links"><a class="read" href="reports/{slug}.html">在线阅读 →</a>{dl_links}</div></div>')
     with open(os.path.join(BASE, "index.html"), "w", encoding="utf-8") as f:
         f.write(INDEX_TEMPLATE.format(cards="\n".join(cards)))
+    # 已逐字核对 PDF 的表格修正（见 fix_tables.py）：重建后自动应用，
+    # 否则通用提取规则的个案问题会复现。
+    try:
+        _mod_dir = os.path.dirname(os.path.abspath(__file__))
+        import sys
+        if _mod_dir not in sys.path:
+            sys.path.insert(0, _mod_dir)
+        from fix_tables import apply_all as _apply_table_fixes
+        print("table fixes applied:", _apply_table_fixes())
+    except Exception as e:  # 修正失败不影响建站主体
+        print("table fixes skipped:", e)
     print("site built")
 
 if __name__ == "__main__":
