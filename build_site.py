@@ -187,7 +187,7 @@ def cell_text(cell, spans):
     lines = {}
     for gy, _, t in frags:
         lines.setdefault(gy, []).append(t)
-    return " ".join("".join(lines[k]) for k in sorted(lines)).strip()
+    return "".join("".join(lines[k]) for k in sorted(lines)).strip()
 
 def table_html(tab, spans):
     """返回 (html, 网格是否可疑)。用 tab.rows 的按行单元格（tab.cells 不是完整网格）。"""
@@ -196,6 +196,20 @@ def table_html(tab, spans):
     grid = []
     for rowobj in tab.rows:
         grid.append([cell_text(c, spans) for c in rowobj.cells])
+    # 逻辑行合并：检测网格会把跨行单元格按文本行拆成多个微行，
+    # 首列为空的行是上一逻辑行的续行，按列拼接回去。
+    if len(grid) > 1:
+        merged = [grid[0]]
+        for row in grid[1:]:
+            if not any(row):
+                continue
+            if row[0] or len(merged) <= 1:
+                merged.append(list(row))
+            else:
+                for i, t in enumerate(row):
+                    if t:
+                        merged[-1][i] = (merged[-1][i] + t) if merged[-1][i] else t
+        grid = merged
     header = grid[0]
     nonempty = [i for i, t in enumerate(header) if t]
     suspicious = False
